@@ -90,7 +90,7 @@ html
 
 结果
 
-![](pic/1.jpg)
+![](/pic/1.jpg)
 
 ### 3. 提交表单，并输出一个表格
 
@@ -98,12 +98,12 @@ html
 
 
 
-![](./pic/2.jpg)
+![](/pic/2.jpg)
 
-![](./pic/3.jpg)
+![](/pic/3.jpg)
 
 ### 4. 对 `/unknown` 给出开发中的提示，返回码 `5xx`
 
-![](./pic/4.jpg)
+![](/pic/4.jpg)
 
-![](./pic/5.jpg)
+![](/pic/5.jpg)
