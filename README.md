@@ -25,7 +25,7 @@
 
 html
 
-```
+```html
 <html>
 
 <head>
@@ -68,7 +68,7 @@ $(document).ready(function () {
 
 html
 
-```
+```html
 <html>
 
 <head>
@@ -88,13 +88,60 @@ html
 </html>
 ```
 
+```go
+func apiTestHandler(w http.ResponseWriter, req *http.Request) {
+	json.NewEncoder(w).Encode(struct {
+		ID      string `json:"id"`
+		Content string `json:"content"`
+	}{ID: "8675309", Content: "Hello from Go!"})
+}
+```
+
+
+
 结果
 
 ![](./pic/1.JPG)
 
 ### 3. 提交表单，并输出一个表格
 
-使用html/template 渲染模板
+使用html/template 渲染表格模板table.html
+
+```html
+<html>
+
+<head>
+  <!-- <link rel="stylesheet" href="css/main.css"/> -->
+</head>
+
+<body>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Content</th>
+    </tr>
+    <tr>
+      <td class="greeting-id">{{.ID}}</td>
+      <td class="greeting-content">{{.Content}}</td>
+    </tr>
+  </table>
+</body>
+
+</html>
+```
+
+```go
+func homeHandler(w http.ResponseWriter, req *http.Request) {
+	u := struct {
+		ID      string `json:"id"`
+		Content string `json:"content"`
+	}{ID: req.URL.Query().Get("id"), Content: req.URL.Query().Get("content")}
+
+	templ, _ := template.ParseFiles("assets/templates/table.html")
+	templ.Execute(w, u)
+	w.Header().Set("Content-Type", "text/html")
+}
+```
 
 
 
@@ -103,6 +150,14 @@ html
 ![](./pic/3.JPG)
 
 ### 4. 对 `/unknown` 给出开发中的提示，返回码 `5xx`
+
+```go
+func unknown(w http.ResponseWriter, r *http.Request) {
+    http.Error(w, "501 page not implemented", http.StatusNotImplemented)
+}
+```
+
+
 
 ![](./pic/4.JPG)
 
