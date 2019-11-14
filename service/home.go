@@ -1,17 +1,26 @@
 package service
 
 import (
-    "net/http"
-
-    "github.com/unrolled/render"
+	"html/template"
+	"net/http"
 )
 
-func homeHandler(formatter *render.Render) http.HandlerFunc {
+func homeHandler(w http.ResponseWriter, req *http.Request) {
+	u := struct {
+		ID      string `json:"id"`
+		Content string `json:"content"`
+	}{ID: req.URL.Query().Get("id"), Content: req.URL.Query().Get("content")}
 
-    return func(w http.ResponseWriter, req *http.Request) {
-        formatter.HTML(w, http.StatusOK, "index", struct {
-            ID      string `json:"id"`
-            Content string `json:"content"`
-        }{ID: "8675309", Content: "Hello from Go!"})
-    }
+	templ, _ := template.ParseFiles("assets/templates/table.html")
+	templ.Execute(w, u)
+	w.Header().Set("Content-Type", "text/html")
+}
+
+func unknown(w http.ResponseWriter, r *http.Request) {
+	http.Error(w, "501 page not implemented", http.StatusNotImplemented)
+}
+
+func init() {
+	http.HandleFunc("/api/form", homeHandler)
+	http.HandleFunc("/unknown", unknown)
 }

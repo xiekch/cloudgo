@@ -1,8 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $.ajax({
-        url: "/api/test"
-    }).then(function(data) {
-       $('.greeting-id').append(data.id);
-       $('.greeting-content').append(data.content);
-    });
+        url: "/api/test",
+        success: function (data) {
+            data = JSON.parse(data)
+            $('.greeting-id').append(data.id);
+            $('.greeting-content').append(data.content);
+        }
+    })
 });
